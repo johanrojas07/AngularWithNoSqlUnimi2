@@ -30,7 +30,7 @@
                 </h2>
                 <div>
                   <a class="primary-btn2 mb-3 mb-sm-0" (click)="openUser()">Crear Estudiante</a>
-                  <a class="primary-btn ml-sm-3 ml-0" (click)="openMateria()">Crear Materia</a>
+                  <!-- <a class="primary-btn ml-sm-3 ml-0" (click)="openMateria()">Crear Materia</a> -->
                 </div>
                 <div style="padding-top: 5px; ">
                   <a style="background: #ff90a0;" class="primary-btn2 mb-3 mb-sm-0" (click)="enRollSubjectsPerStudent()">Inscribir Materias a Estudiante</a>
@@ -41,111 +41,7 @@
         </div>
       </div>
     </section>
-    <!--================ End Home Banner Area =================-->
 
-    <!--================ Start Feature Area =================-->
-    <!-- <section class="feature_area section_gap_top">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-5">
-            <div class="main_title">
-              <h2 class="mb-3">Awesome Feature</h2>
-              <p>
-                Replenish man have thing gathering lights yielding shall you
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6">
-            <div class="single_feature">
-              <div class="icon"><span class="flaticon-student"></span></div>
-              <div class="desc">
-                <h4 class="mt-3 mb-2">Scholarship Facility</h4>
-                <p>
-                  One make creepeth, man bearing theira firmament won't great
-                  heaven
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="single_feature">
-              <div class="icon"><span class="flaticon-book"></span></div>
-              <div class="desc">
-                <h4 class="mt-3 mb-2">Sell Online Course</h4>
-                <p>
-                  One make creepeth, man bearing theira firmament won't great
-                  heaven
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="single_feature">
-              <div class="icon"><span class="flaticon-earth"></span></div>
-              <div class="desc">
-                <h4 class="mt-3 mb-2">Global Certification</h4>
-                <p>
-                  One make creepeth, man bearing theira firmament won't great
-                  heaven
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </!-->
-    <section class="feature_area" style="padding: 0">
-        <div class="container-fluid">
-           <div class="row justify-content-center">
-             <div class ="col-12">
-                <table mat-table [dataSource]="data"
-                matSort matSortActive="created" matSortDisableClear matSortDirection="desc" style="width: 100%;">
-                <!-- Number Column -->
-                <ng-container matColumnDef="nombre">
-                  <th mat-header-cell *matHeaderCellDef>Nombre</th>
-                  <td mat-cell *matCellDef="let row">{{row.data.nombre}}</td>
-                </ng-container>
-
-                <!-- Title Column -->
-                <ng-container matColumnDef="apellido">
-                  <th mat-header-cell *matHeaderCellDef>Apellido</th>
-                  <td mat-cell *matCellDef="let row">{{row.data.apellido}}</td>
-                </ng-container>
-
-                <!-- State Column -->
-                <ng-container matColumnDef="materias">
-                  <th mat-header-cell *matHeaderCellDef>Materias</th>
-                  <td mat-cell *matCellDef="let row">{{(row.textMaterias === '') ? 'NO TIENE MATERIAS INSCRITAS': row.textMaterias}}
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                    <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button color="warn" aria-label="Ver">
-                            <mat-icon>remove_red_eye</mat-icon>
-                          </button>
-                    </td>
-                </ng-container>
-
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-             </div>
-             <div class="w-100"></div>
-             <div class="col">
-                <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
-             </div>
-        </div>
-
-      </div>
-    </section>
-    <!--================ End Feature Area =================-->
 
 
   </body>

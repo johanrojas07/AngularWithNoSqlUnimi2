@@ -34,7 +34,7 @@
         <mat-progress-spinner style="margin:0 auto;" mode="indeterminate" *ngIf="loading" [diameter]="200"></mat-progress-spinner>
     </div>
   </div>
-  
+
   <div *ngIf="!loading && this.studentSelect && this.studentSelect.data && this.studentSelect.id">
     <div class="row" style="font-size: 24px;">
       <div class="col-md-6 text-center">
@@ -45,20 +45,34 @@
       </div>
     </div>
     <div class="row" style="padding: 50px 0px 50px 0; height: 300px;" >
-      <div class="col-md-6">
-        <span>Todas Las Materias</span>
-          <select  class="form-control" [(ngModel)]="selectedToAdd" multiple name="myselecttsms2" (ngModelChange)="chosenCars($event)" style="height: 100%;">
-            <option style="font: 150% sans-serif;" *ngFor="let car of objectSubjects" [ngValue]="car">{{car.data.nrc}} : {{car.data.nombre}}</option>
-          </select>
+      <div class="col-md-12 text-center">
+        <div style="    padding: 2px;
+        font-size: 28px;
+        border: solid 5px #727272;">
+            <span>Materias</span>
+        </div>
+        <div>
+          <div>
+            <select class="form-control"  *ngIf="objectSubjects.length > 0">
+              <option style="font: 150% sans-serif;" *ngFor="let car of objectSubjectsAll" [ngValue]="car">{{car.data.nrc}} : {{car.data.nombre}}</option>
+            </select>
+          </div>
+          <div *ngIf="objectSubjects.length === 0">
+            NO EXISTEN MATERIAS
+          </div>
+          <div>
+            <button class="btn btn-primary btn-block">Nueva Materia Materia</button>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
+      <!-- <div class="col-md-6">
           <span>Materias Del Estudiante</span>
           <select  class="form-control" [(ngModel)]="selectedToRemove" multiple name="myselecttsms" (ngModelChange)="chosenCarsToRemove($event)" style="height: 100%;">
             <option style="font: 150% sans-serif;" *ngFor="let car of selectedCars" [ngValue]="car">{{car.data.nrc}} : {{car.data.nombre}}</option>
           </select>
-      </div>
+      </div> -->
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-6 text-center">
           <button mat-fab aria-label="Agregar Materia" (click)="assigne()" style="background: #53e44a;">
               <mat-icon style="font-size: 20px;">add</mat-icon>
@@ -69,12 +83,12 @@
               <mat-icon style="font-size: 20px;">remove</mat-icon>
           </button>
       </div>
-    </div>
+    </div> -->
     <div class="mt-3 mb-3">
         <button class="btn btn-primary btn-block" (click)="updateStudent()" [disabled]="updateLoading">{{(updateLoading) ? 'Actualizando... Espera un momento' : 'Actualizar'}} </button>
     </div>
   </div>
-  
+
 </div>
 
 

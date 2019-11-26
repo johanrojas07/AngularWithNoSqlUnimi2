@@ -48,7 +48,8 @@ export class HomeComponent implements OnInit {
   enRollSubjectsPerStudent() {
     const dialogRef = this.dialog.open(EnrollSubjectsPerStudentComponent, {
       disableClose: true,
-      width: '800px',
+      width: '1500px',
+      height: '800px',
       data: {}
     });
     dialogRef.afterClosed().subscribe(result => {

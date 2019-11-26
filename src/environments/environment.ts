@@ -9,14 +9,14 @@ import * as firebase from 'firebase';
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyAwgddtAa88QBlsNqWGFKdEjPE0-p9hd9U",
-    authDomain: "uniminuto-1edbb.firebaseapp.com",
-    databaseURL: "https://uniminuto-1edbb.firebaseio.com",
-    projectId: "uniminuto-1edbb",
-    storageBucket: "uniminuto-1edbb.appspot.com",
-    messagingSenderId: "892702806631",
-    appId: "1:892702806631:web:3fbe7e7c21c5146e37bac2",
-    measurementId: "G-HM65WK368G"
+    apiKey: 'AIzaSyAYYgSPkCKIOob99dMm8kcMVSAnXiT6Rv8',
+    authDomain: 'uniminuto-3-corte.firebaseapp.com',
+    databaseURL: "https://uniminuto-3-corte.firebaseio.com",
+    projectId: "uniminuto-3-corte",
+    storageBucket: "uniminuto-3-corte.appspot.com",
+    messagingSenderId: "43805400436",
+    appId: "1:43805400436:web:624059bb314cfcd56ee021",
+    measurementId: "G-BXSM6L197D"
   }
   // Initialize Firebase
 };
