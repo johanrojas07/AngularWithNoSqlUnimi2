@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+      <h1> Materias </h1>
+  </div>
+  <form (ngSubmit)="newMateria(newSubjectsForm.value)" [formGroup]="newSubjectsForm" style="text-align: center; font-size: 20px;">
+      <div class="form-row">
+        <div class="col text-center">
+          <input type="hidden" formControlName="id">
+            <label class="col-md-12" for="nombre">Nombre:  </label>
+            <input type="text" formControlName="nombre">
+        </div>
+        <div class="col text-center">
+            <label class="col-md-12" for="nrc">NRC:  </label>
+            <input type="number" formControlName="nrc">
+        </div>
+      </div>
+      <div class="mt-3 mb-3">
+          <button class="btn btn-primary btn-block" type="submit" [disabled]="!newSubjectsForm.valid">{{((currentStatus === 1) ? 'Agregar' : 'Editar')}}</button>
+      </div>
+  </form>
+  <div style="overflow-y: scroll; overflow-x: hidden; max-height: 500px;">
+    <div class="row text-center" *ngFor="let subject of subjects">
+      <div class="col-md-4">
+          <div class="media-figure">
+              <p>{{subject.data.nombre}}</p>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="media-figure">
+              <p>{{subject.data.nrc}}</p>
+          </div>
+      </div>
+      <div class="col-md-4 text-center">
+          <button class="btn btn-warning mr-4" (click)="editMateria(subject.id)">Editar</button>
+          <button class="btn btn-danger ml-4" (click)="deleteMateria(subject.id)">Eliminar</button>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="close()">Cerrar</button>
+</div>
+
