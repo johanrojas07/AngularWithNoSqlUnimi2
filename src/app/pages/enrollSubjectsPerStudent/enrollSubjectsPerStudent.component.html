@@ -44,33 +44,44 @@
         <span>Identificacion: {{studentSelect.data.identificacion}}</span>
       </div>
     </div>
-    <div class="row" style="padding: 50px 0px 50px 0; height: 300px;" >
+    <div class="row" style="padding: 35px 0px 40px 0;">
       <div class="col-md-12 text-center">
-        <div style="    padding: 2px;
-        font-size: 28px;
-        border: solid 5px #727272;">
-            <span>Materias</span>
-        </div>
+
+        <mat-form-field class="example-full-width">
+          <mat-select placeholder="Buscar Materia ">
+            <mat-option *ngFor="let car of objectSubjectsAll" [value]="car"> {{car.data.nrc}} : {{car.data.nombre}}</mat-option>
+          </mat-select>
+            <!-- <input type="text" placeholder="Buscar Estudiante" matInput [matAutocomplete]="autoOperators" [(ngModel)]="studentSelect" [formControl]="myControl" >
+            <mat-autocomplete class="single-autocomplete" #autoOperators="matAutocomplete" [displayWith]="compareObjectSelect" ngDefaultControl>
+              <mat-option *ngFor="let student of filteredOptions | async" [value]="student" >
+                {{student.data.nombre}} {{' ' + student.data.apellido}} - {{student.data.identificacion}}
+              </mat-option>
+            </mat-autocomplete> -->
+        </mat-form-field>
+
+
         <div>
-          <div>
-            <select class="form-control"  *ngIf="objectSubjects.length > 0">
-              <option style="font: 150% sans-serif;" *ngFor="let car of objectSubjectsAll" [ngValue]="car">{{car.data.nrc}} : {{car.data.nombre}}</option>
-            </select>
-          </div>
-          <div *ngIf="objectSubjects.length === 0">
+          <div *ngIf="objectSubjectsAll.length === 0" style="font-size: 22px;
+          font-weight: 900;
+          border: solid 5px red;
+          height: 47px;">
             NO EXISTEN MATERIAS
           </div>
-          <div>
-            <button class="btn btn-primary btn-block">Nueva Materia Materia</button>
+          <div style="padding-top: 28px;">
+            <button style="float: left;
+            width: 24%;" class="btn btn-primary" (click)="nuevaMateria()">Nueva Materia</button>
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-6">
-          <span>Materias Del Estudiante</span>
-          <select  class="form-control" [(ngModel)]="selectedToRemove" multiple name="myselecttsms" (ngModelChange)="chosenCarsToRemove($event)" style="height: 100%;">
-            <option style="font: 150% sans-serif;" *ngFor="let car of selectedCars" [ngValue]="car">{{car.data.nrc}} : {{car.data.nombre}}</option>
-          </select>
-      </div> -->
+    </div>
+    <div class="row">
+      <div style="width: 100%;
+      padding: 10px 200px 10px 200px;">
+          <button style="color: #007bff;
+          float: right;
+          width: 100%;
+          font-size: 22px" class="btn btn-light" (click)="registrarMateriaAEstudiante()">Inscribir Estudiante</button>
+      </div>
     </div>
     <!-- <div class="row">
       <div class="col-md-6 text-center">
@@ -84,9 +95,9 @@
           </button>
       </div>
     </div> -->
-    <div class="mt-3 mb-3">
+    <!-- <div class="mt-3 mb-3">
         <button class="btn btn-primary btn-block" (click)="updateStudent()" [disabled]="updateLoading">{{(updateLoading) ? 'Actualizando... Espera un momento' : 'Actualizar'}} </button>
-    </div>
+    </div> -->
   </div>
 
 </div>

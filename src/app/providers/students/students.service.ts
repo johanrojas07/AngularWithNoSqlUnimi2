@@ -10,7 +10,7 @@ export class StudentService {
     private firestore: AngularFirestore
   ) {}
   // Crea un nuevo usuario
-  public createUser(data: {nombre: string, apellido: string}) {
+  public createUser(data: {nombre: string, codigo: string}) {
     return this.firestore.collection('estudiantes').add(data);
   }
   // Obtiene un usuario
@@ -96,5 +96,5 @@ export class StudentService {
       });
     });
   }
-  
+
 }

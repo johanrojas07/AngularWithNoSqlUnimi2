@@ -104,9 +104,8 @@ export class StudentsComponent implements OnInit {
     console.log(`Status: ${this.currentStatus}`);
     if (this.currentStatus === 1) {
       const data = {
-        nombre: form.nombre,
-        apellido: form.apellido,
-        identificacion: form.identificacion + ''
+        nombre: form.nombre + ' ' + form.apellido,
+        codigo: form.identificacion + ''
       };
       this.userService.createUser(data).then(() => {
         console.log('Documento creado exitósamente!');
@@ -121,8 +120,7 @@ export class StudentsComponent implements OnInit {
       });
     } else {
       const data = {
-        nombre: form.nombre,
-        apellido: form.apellido,
+        nombre: form.nombre + ' ' + form.apellido,
         identificacion: form.identificacion + '',
       };
       this.userService.updateUsers(documentId, data).then(() => {

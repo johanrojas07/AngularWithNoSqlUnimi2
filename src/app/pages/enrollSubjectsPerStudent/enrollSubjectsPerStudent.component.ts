@@ -6,8 +6,9 @@ import {map, startWith} from 'rxjs/operators';
 import { ComponentSnackBarComponent } from 'src/app/components/ComponentSnackBar/ComponentSnackBar.component';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { StudentProvider } from 'src/app/providers/students/students.provider';
+import { MateriasComponent } from '../materias/materias.component';
 
 
 @Component({
@@ -24,14 +25,15 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
   updateLoading = false;
   myControl = new FormControl();
   studentSelect: any;
-  selectedCars: any[] = [];
-  selectedToAdd: any[] = [];
-  selectedToRemove: any[] = [];
+  // selectedCars: any[] = [];
+  // selectedToAdd: any[] = [];
+  // selectedToRemove: any[] = [];
 
   filteredOptions: Observable<any>;
 
   constructor(private materiasService: MateriasService,
               private studentService: StudentService,
+              public dialog: MatDialog,
               public dialogRef: MatDialogRef<EnrollSubjectsPerStudentComponent>,
               public studentProvider: StudentProvider,
               private snackBar: MatSnackBar) { }
@@ -88,30 +90,30 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
     console.log('getStudentWithSubjects', this.studentSelect);
     this.studentService.getMateriasUser(this.studentSelect.id)
     .then((userSubjects: any[]) => {
-      let subjectNoUsers= [];
-      this.selectedCars = [];
+      // let subjectNoUsers= [];
+      // this.selectedCars = [];
       this.objectSubjects = [];
-      this.objectSubjectsAll.forEach((subjectGlobal) => {
-        let exist = false;
-        userSubjects.forEach((subjectUser) => {
-          if (subjectGlobal.id === subjectUser.id) {
-            // Si tiene la materia la agrega a las seleccioandas
-            exist = true;
-            console.log('PASOO AGREGAR ', subjectGlobal);
-            this.selectedCars = this.selectedCars.concat(subjectGlobal);
-          }
-        });
-        if (!exist) {
-          // Si no tiene la materia la agrega para seleccionar.
-          subjectNoUsers = subjectNoUsers.concat(subjectGlobal);
-        }
-      });
-      if (userSubjects.length === 0) {
-        this.objectSubjects = this.objectSubjectsAll;
-      } else {
-        // Las que no son del usuario
-        this.objectSubjects = subjectNoUsers;
-      }
+      // this.objectSubjectsAll.forEach((subjectGlobal) => {
+      //   let exist = false;
+      //   userSubjects.forEach((subjectUser) => {
+      //     if (subjectGlobal.id === subjectUser.id) {
+      //       // Si tiene la materia la agrega a las seleccioandas
+      //       exist = true;
+      //       console.log('PASOO AGREGAR ', subjectGlobal);
+      //       this.selectedCars = this.selectedCars.concat(subjectGlobal);
+      //     }
+      //   });
+      //   if (!exist) {
+      //     // Si no tiene la materia la agrega para seleccionar.
+      //     subjectNoUsers = subjectNoUsers.concat(subjectGlobal);
+      //   }
+      // });
+      // if (userSubjects.length === 0) {
+      //   this.objectSubjects = this.objectSubjectsAll;
+      // } else {
+      //   // Las que no son del usuario
+      //   this.objectSubjects = subjectNoUsers;
+      // }
       this.loading = false;
     })
     .catch((error) => {
@@ -133,35 +135,55 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
     });
   }
 
+  nuevaMateria() {
+    console.log("nuevaMateria");
+    const dialogRef = this.dialog.open(MateriasComponent, {
+      width: '800px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getDataMaterias();
+      console.log('The dialog was closed');
+    });
+  }
+
+  registrarMateriaAEstudiante() {
+
+  }
+
   compareObjectSelect(data?: any) {
     return data ? ((data.data) ? data.data.nombre : undefined): undefined;
   }
 
+  getDataMaterias() {
 
-  chosenCars(objectSubjects) {
-    this.selectedToAdd = objectSubjects;
   }
 
-  chosenCarsToRemove(objectSubjects) {
-    this.selectedToRemove = objectSubjects;
-  }
 
-  assigne() {
-    this.selectedCars = this.selectedCars.concat(this.selectedToAdd);
-    this.objectSubjects = this.objectSubjects.filter(car => {
-      return this.selectedCars.indexOf(car) < 0;
-    });
+  // chosenCars(objectSubjects) {
+  //   this.selectedToAdd = objectSubjects;
+  // }
 
-    this.selectedToAdd = [];
-  }
+  // chosenCarsToRemove(objectSubjects) {
+  //   this.selectedToRemove = objectSubjects;
+  // }
 
-  unassigne() {
-    this.objectSubjects = this.objectSubjects.concat(this.selectedToRemove);
-    this.selectedCars = this.selectedCars.filter(selectedCar => {
-      return this.objectSubjects.indexOf(selectedCar) < 0;
-    });
-    this.selectedToRemove = [];
-  }
+  // assigne() {
+  //   this.selectedCars = this.selectedCars.concat(this.selectedToAdd);
+  //   this.objectSubjects = this.objectSubjects.filter(car => {
+  //     return this.selectedCars.indexOf(car) < 0;
+  //   });
+
+  //   this.selectedToAdd = [];
+  // }
+
+  // unassigne() {
+  //   this.objectSubjects = this.objectSubjects.concat(this.selectedToRemove);
+  //   this.selectedCars = this.selectedCars.filter(selectedCar => {
+  //     return this.objectSubjects.indexOf(selectedCar) < 0;
+  //   });
+  //   this.selectedToRemove = [];
+  // }
 
   close() {
     this.dialogRef.close();
