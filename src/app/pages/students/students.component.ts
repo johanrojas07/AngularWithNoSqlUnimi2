@@ -40,14 +40,12 @@ export class StudentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe((usersSnapshot) => { // Se subscribe para ver cambios en esa coleccion
-      this.users = [];
-      usersSnapshot.forEach((catData: any) => { // Recorre cada uno de los usuarios agregados
-        this.users.push({
-          id: catData.payload.doc.id,
-          data: catData.payload.doc.data()
-        });
-      });
+    this.getUsersApi();
+  }
+
+  public getUsersApi() {
+    this.userService.getUsersApi().subscribe((usersSnapshot) => { // Se subscribe para ver cambios en esa coleccion
+      this.users = usersSnapshot;
     });
   }
 
@@ -66,38 +64,21 @@ export class StudentsComponent implements OnInit {
     });
   }
 
-  public deleteUser(documentId) {
-    let isvalid = false;
-    this.userService.getMateriasUser(documentId).then((numberMaterias: Array<any>[]) => {
-      let promise: Promise<any> = Promise.resolve();
-      if (numberMaterias.length > 0) {
-        this._snackBar.openFromComponent(ComponentSnackBarComponent, {
-          duration: 5000,
-          data: {text: 'No es posible ya que el estudiante tiene materias inscritas'}
-        });
-      } else {
-        isvalid = true;
-        promise = this.userService.deleteUser(documentId);
-      }
-      return promise;
-     })
-     .then(() => {
-       if (isvalid) {
-        this._snackBar.openFromComponent(ComponentSnackBarComponent, {
-          duration: 2000,
-          data: {text: 'Se elimino correctamente '}
-        });
-       }
-     })
-     .catch((error) => {
-      if (isvalid) {
-        this._snackBar.openFromComponent(ComponentSnackBarComponent, {
-          duration: 2000,
-          data: {text: 'Ocurrio un error al eliminar ', error}
-        });
-       }
-      console.error(error);
-     });
+  public deleteUser(codigo) {
+    this.userService.deleteStudent({nrc: 0, codigo})
+    .subscribe(() => {
+      this.getUsersApi();
+      this._snackBar.openFromComponent(ComponentSnackBarComponent, {
+        duration: 2000,
+        data: {text: 'Se elimino correctamente '}
+      });
+    }, (error) => {
+      this._snackBar.openFromComponent(ComponentSnackBarComponent, {
+        duration: 2000,
+        data: {text: 'Ocurrio un error al eliminar ', error}
+      });
+    });
+
   }
 
   public newUser(form, documentId = this.documentId) {
@@ -105,10 +86,10 @@ export class StudentsComponent implements OnInit {
     if (this.currentStatus === 1) {
       const data = {
         nombre: form.nombre + ' ' + form.apellido,
-        codigo: form.identificacion + ''
+        codigo: parseInt(form.identificacion)
       };
-      this.userService.createUser(data).then(() => {
-        console.log('Documento creado exitósamente!');
+      this.userService.createUserApi(data).subscribe(() => {
+        this.getUsersApi();
         this.newUserForm.setValue({
           nombre: '',
           apellido: '',

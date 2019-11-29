@@ -53,54 +53,42 @@ export class MateriasComponent implements OnInit {
     });
   }
 
-  public deleteMateria(documentId) {
-    let isvalid = false;
-    this.materiasService.usersInMateria(documentId).then((numberStudents: number) => {
-      let promise: Promise<any> = Promise.resolve();
-      if (numberStudents > 0) {
-        this._snackBar.openFromComponent(ComponentSnackBarComponent, {
-          duration: 5000,
-          data: {text: 'No es posible ya que existen estudiantes inscritos'}
-        });
-      } else {
-        isvalid = true;
-        promise = this.materiasService.deleteMateria(documentId);
-
-      }
-      return promise;
-     })
-     .then(() => {
-       if (isvalid) {
+  public deleteMateria(subject: any) {
+    this.materiasService.deleteSubject({nrc: subject.data.nrc, codigo: 0})
+    .subscribe(() => {
+      this.materiasService.deleteMateria(subject.id)
+      .then(() => {
         this._snackBar.openFromComponent(ComponentSnackBarComponent, {
           duration: 2000,
           data: {text: 'Se elimino correctamente '}
         });
-       }
-     })
-     .catch((error) => {
-      if (isvalid) {
-        this._snackBar.openFromComponent(ComponentSnackBarComponent, {
-          duration: 2000,
-          data: {text: 'Ocurrio un error al eliminar ', error}
-        });
-       }
-      console.error(error);
-     })
+      });
+    }, (error) => {
+      this._snackBar.openFromComponent(ComponentSnackBarComponent, {
+        duration: 2000,
+        data: {text: 'Ocurrio un error al eliminar ', error}
+      });
+    });
+
   }
 
   public newMateria(form, documentId = this.documentId) {
     console.log(`Status: ${this.currentStatus}`);
     if (this.currentStatus === 1) {
-      const data = {
+      const data: any = {
         nombre: form.nombre,
         nrc: form.nrc
       };
-      this.materiasService.createMaterias(data).then(() => {
-        console.log('Documento creado exitósamente!');
-        this.newSubjectsForm.setValue({
-          nombre: '',
-          nrc: '',
-          id: ''
+      this.materiasService.createMaterias(data).then((refData) => {
+        data.hashkey = refData.id;
+        data.description = data.nombre;
+        this.materiasService.createMateriasApi(data).subscribe((data) => {
+          console.log("createMateriasApi Response", data);
+          this.newSubjectsForm.setValue({
+            nombre: '',
+            nrc: '',
+            id: ''
+          });
         });
       }, (error) => {
         console.error(error);

@@ -22,7 +22,7 @@
               <input type="text" placeholder="Buscar Estudiante" matInput [matAutocomplete]="autoOperators" [(ngModel)]="studentSelect" [formControl]="myControl" >
               <mat-autocomplete class="single-autocomplete" #autoOperators="matAutocomplete" [displayWith]="compareObjectSelect" ngDefaultControl>
                 <mat-option *ngFor="let student of filteredOptions | async" [value]="student" >
-                  {{student.data.nombre}} {{' ' + student.data.apellido}} - {{student.data.identificacion}}
+                  {{student.nombre}} - {{student.codigo}}
                 </mat-option>
               </mat-autocomplete>
           </mat-form-field>
@@ -35,20 +35,20 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && this.studentSelect && this.studentSelect.data && this.studentSelect.id">
+  <div *ngIf="!loading && this.studentSelect && this.studentSelect.nombre && this.studentSelect.codigo">
     <div class="row" style="font-size: 24px;">
       <div class="col-md-6 text-center">
-          <span>Estudiante: {{studentSelect.data.nombre}}</span>
+          <span>Estudiante: {{studentSelect.nombre}}</span>
       </div>
       <div class="col-md-6 text-center">
-        <span>Identificacion: {{studentSelect.data.identificacion}}</span>
+        <span>Identificacion: {{studentSelect.codigo}}</span>
       </div>
     </div>
     <div class="row" style="padding: 35px 0px 40px 0;">
       <div class="col-md-12 text-center">
 
         <mat-form-field class="example-full-width">
-          <mat-select placeholder="Buscar Materia ">
+          <mat-select placeholder="Buscar Materia" (selectionChange)="changeSubject($event.value)">
             <mat-option *ngFor="let car of objectSubjectsAll" [value]="car"> {{car.data.nrc}} : {{car.data.nombre}}</mat-option>
           </mat-select>
             <!-- <input type="text" placeholder="Buscar Estudiante" matInput [matAutocomplete]="autoOperators" [(ngModel)]="studentSelect" [formControl]="myControl" >
@@ -81,6 +81,32 @@
           float: right;
           width: 100%;
           font-size: 22px" class="btn btn-light" (click)="registrarMateriaAEstudiante()">Inscribir Estudiante</button>
+      </div>
+    </div>
+    <div class="row" *ngIf="subjectSelect">
+        <span style="font-size: 26px;" class="col-md-12 text-center">Estudiantes Incritos en: {{subjectSelect.data.nombre}}</span>
+    </div>
+    <div class="row">
+      <div class="col-md-12" style="overflow-y: scroll; overflow-x: hidden; max-height: 500px; padding: 24px; font-size: 17px;">
+        <div class="row text-center" *ngFor="let student of studentsInSubjectArray" style="    border: solid 1px #f8f9fa;">
+          <div class="col-md-4">
+              <div class="media-figure">
+                  <p>{{student.nombre}}</p>
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="media-figure">
+                  <p>{{student.codigo}}</p>
+              </div>
+          </div>
+          <div class="col-md-4 text-center">
+              <!-- <button class="btn btn-warning mr-4" (click)="editMateria(subject.id)">Editar</button> -->
+              <button class="btn btn-danger ml-4" (click)="deleteStudentInSubject(student.codigo)">Eliminar</button>
+          </div>
+        </div>
+        <div class="row" *ngIf="studentsInSubjectArray.length == 0">
+          <span style="font-size: 26px;" class="col-md-12 text-center" > No Hay estudiantes Inscritos </span>
+        </div>
       </div>
     </div>
     <!-- <div class="row">

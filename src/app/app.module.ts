@@ -17,7 +17,8 @@ import { StudentsComponent } from './pages/students/students.component';
 import {DemoMaterialModule} from './material-module';
 import { ComponentSnackBarComponent } from './components/ComponentSnackBar/ComponentSnackBar.component';
 import { EnrollSubjectsPerStudentComponent } from './pages/enrollSubjectsPerStudent/enrollSubjectsPerStudent.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,9 @@ import { EnrollSubjectsPerStudentComponent } from './pages/enrollSubjectsPerStud
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AgGridModule.withComponents(null),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    HttpModule
   ],
   entryComponents: [
     ComponentSnackBarComponent,

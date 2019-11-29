@@ -25,7 +25,10 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
   updateLoading = false;
   myControl = new FormControl();
   studentSelect: any;
-  // selectedCars: any[] = [];
+  subjectSelect: any;
+  selectedCars: any[] = [];
+
+  studentsInSubjectArray = [];
   // selectedToAdd: any[] = [];
   // selectedToRemove: any[] = [];
 
@@ -44,15 +47,10 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
   }
 
   getAllStudents() {
-    this.studentService.getUsers().subscribe(
+    this.studentService.getUsersApi().subscribe(
       (response) => {
         console.log("ESTUDIANTE", response);
-        response.forEach((catData: any) => { // Recorre cada uno de los usuarios agregados
-          this.students.push({
-            id: catData.payload.doc.id,
-            data: catData.payload.doc.data()
-          });
-        });
+        this.students = response;
         this.filteredOptions = this.myControl.valueChanges
         .pipe(
           startWith(''),
@@ -71,69 +69,80 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
   private _filter(value: any): string[] {
     let filterValue = '';
     console.log("value", value);
-    if (value && value.data) {
+    if (value && value.nombre) {
       // if (!this.studentSelect || (value.ID !== this.studentSelect.ID)) {
       this.studentSelect = value;
-      this.getStudentWithSubjects();
+      // this.getStudentWithSubjects();
       // }
-      filterValue = value.data.nombre.toLowerCase();
+      filterValue = value.nombre.toLowerCase();
     } else {
       filterValue = (value) ? value.toLowerCase() : '';
     }
     // tslint:disable-next-line:max-line-length
     console.log('This.students', this.students);
-    return this.students.filter(option => option.data.nombre.toLowerCase().includes(filterValue) || option.data.identificacion.toLowerCase().includes(filterValue));
+    return this.students.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
-  public getStudentWithSubjects() {
-    this.loading = true;
-    console.log('getStudentWithSubjects', this.studentSelect);
-    this.studentService.getMateriasUser(this.studentSelect.id)
-    .then((userSubjects: any[]) => {
-      // let subjectNoUsers= [];
-      // this.selectedCars = [];
-      this.objectSubjects = [];
-      // this.objectSubjectsAll.forEach((subjectGlobal) => {
-      //   let exist = false;
-      //   userSubjects.forEach((subjectUser) => {
-      //     if (subjectGlobal.id === subjectUser.id) {
-      //       // Si tiene la materia la agrega a las seleccioandas
-      //       exist = true;
-      //       console.log('PASOO AGREGAR ', subjectGlobal);
-      //       this.selectedCars = this.selectedCars.concat(subjectGlobal);
-      //     }
-      //   });
-      //   if (!exist) {
-      //     // Si no tiene la materia la agrega para seleccionar.
-      //     subjectNoUsers = subjectNoUsers.concat(subjectGlobal);
-      //   }
-      // });
-      // if (userSubjects.length === 0) {
-      //   this.objectSubjects = this.objectSubjectsAll;
-      // } else {
-      //   // Las que no son del usuario
-      //   this.objectSubjects = subjectNoUsers;
-      // }
-      this.loading = false;
-    })
-    .catch((error) => {
-      this.loading = false;
-      this.snackBar.openFromComponent(ComponentSnackBarComponent, {
-        duration: 2000,
-        data: {text: 'Error Obteniendo Lista de Estudiantes, ' + error.error}
-      });
-    });
-  }
+  // public getStudentWithSubjects() {
+  //   this.loading = true;
+  //   console.log('getStudentWithSubjects', this.studentSelect);
+  //   this.studentService.getMateriasUser(this.studentSelect.id)
+  //   .then((userSubjects: any[]) => {
+  //     // let subjectNoUsers= [];
+  //     // this.selectedCars = [];
+  //     this.objectSubjects = [];
+  //     // this.objectSubjectsAll.forEach((subjectGlobal) => {
+  //     //   let exist = false;
+  //     //   userSubjects.forEach((subjectUser) => {
+  //     //     if (subjectGlobal.id === subjectUser.id) {
+  //     //       // Si tiene la materia la agrega a las seleccioandas
+  //     //       exist = true;
+  //     //       console.log('PASOO AGREGAR ', subjectGlobal);
+  //     //       this.selectedCars = this.selectedCars.concat(subjectGlobal);
+  //     //     }
+  //     //   });
+  //     //   if (!exist) {
+  //     //     // Si no tiene la materia la agrega para seleccionar.
+  //     //     subjectNoUsers = subjectNoUsers.concat(subjectGlobal);
+  //     //   }
+  //     // });
+  //     // if (userSubjects.length === 0) {
+  //     //   this.objectSubjects = this.objectSubjectsAll;
+  //     // } else {
+  //     //   // Las que no son del usuario
+  //     //   this.objectSubjects = subjectNoUsers;
+  //     // }
+  //     this.loading = false;
+  //   })
+  //   .catch((error) => {
+  //     this.loading = false;
+  //     this.snackBar.openFromComponent(ComponentSnackBarComponent, {
+  //       duration: 2000,
+  //       data: {text: 'Error Obteniendo Lista de Estudiantes, ' + error.error}
+  //     });
+  //   });
+  // }
 
   getAllSubject() {
     this.materiasService.getMaterias().subscribe((data) => {
-      this.objectSubjects = [];
+      // this.objectSubjects = [];
+      let exist = false;
+      this.objectSubjectsAll = [];
       data.forEach((materiasData: any) => {
+        if (this.subjectSelect && this.subjectSelect.data.nrc === materiasData.payload.doc.data().nrc) {
+          exist = true;
+        }
         this.objectSubjectsAll.push({id: materiasData.payload.doc.id, data: materiasData.payload.doc.data()});
       });
+      if (!exist) {
+        this.studentsInSubjectArray = [];
+        this.subjectSelect = null;
+      }
 
     });
   }
+
+
 
   nuevaMateria() {
     console.log("nuevaMateria");
@@ -147,16 +156,63 @@ export class EnrollSubjectsPerStudentComponent implements OnInit {
     });
   }
 
-  registrarMateriaAEstudiante() {
+  deleteStudentInSubject(codigo: number) {
+    this.materiasService.deleteSubjectWithStudent({nrc: this.subjectSelect.data.nrc, codigo}).subscribe(() => {
+      this.changeSubject(this.subjectSelect);
+      this.snackBar.openFromComponent(ComponentSnackBarComponent, {
+        duration: 2000,
+        data: {text: 'Se elimino Correctamente'}
+      });
+    }, (error) => {
+      this.snackBar.openFromComponent(ComponentSnackBarComponent, {
+        duration: 2000,
+        data: {text: 'Error Al Eliminar'}
+      });
+    });
+  }
 
+  registrarMateriaAEstudiante() {
+    let inscrito = false;
+    this.studentsInSubjectArray.forEach((student) => {
+      if (student.codigo === this.studentSelect.codigo) {
+        inscrito = true;
+      }
+    });
+
+    if (!inscrito) {
+      this.materiasService.addSubjectWithStudent({nrc: this.subjectSelect.data.nrc , codigo: this.studentSelect.codigo})
+      .subscribe(() => {
+        this.changeSubject(this.subjectSelect);
+        this.snackBar.openFromComponent(ComponentSnackBarComponent, {
+          duration: 2000,
+          data: {text: 'Se Inscribio Correctamente El Estudiante'}
+        });
+      });
+    } else {
+      this.snackBar.openFromComponent(ComponentSnackBarComponent, {
+        duration: 2000,
+        data: {text: 'El estudiante ya esta inscrito en esta materia'}
+      });
+    }
+  }
+
+  changeSubject(subject: any) {
+    console.log("changeSubject", subject);
+    this.subjectSelect = subject;
+    this.studentService.studentsInSubject(subject.data.nrc)
+    .subscribe((data) => {
+      if (data) {
+        this.studentsInSubjectArray = data;
+      }
+    });
   }
 
   compareObjectSelect(data?: any) {
-    return data ? ((data.data) ? data.data.nombre : undefined): undefined;
+    return data ? ((data.nombre) ? data.nombre : undefined) : undefined;
   }
 
   getDataMaterias() {
-
+    this.getAllSubject();
   }
 
 

@@ -20,19 +20,19 @@
   </form>
   <div style="overflow-y: scroll; overflow-x: hidden; max-height: 500px;">
     <div class="row text-center" *ngFor="let subject of subjects">
-      <div class="col-md-4">
+      <div class="col-md-3">
           <div class="media-figure">
               <p>{{subject.data.nombre}}</p>
           </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
           <div class="media-figure">
               <p>{{subject.data.nrc}}</p>
           </div>
       </div>
-      <div class="col-md-4 text-center">
-          <button class="btn btn-warning mr-4" (click)="editMateria(subject.id)">Editar</button>
-          <button class="btn btn-danger ml-4" (click)="deleteMateria(subject.id)">Eliminar</button>
+      <div class="col-md-3 text-center">
+          <!-- <button class="btn btn-warning mr-4" (click)="editMateria(subject.id)">Editar</button> -->
+          <button class="btn btn-danger ml-4" (click)="deleteMateria(subject)">Eliminar</button>
       </div>
     </div>
   </div>

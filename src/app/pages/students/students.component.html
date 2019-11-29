@@ -26,22 +26,17 @@
     <div class="row text-center" *ngFor="let user of users" >
       <div class="col-md-3">
           <div class="media-figure">
-              <p>{{user.data.nombre}}</p>
+              <p>{{user.nombre}}</p>
           </div>
       </div>
-      <div class="col-md-2">
-          <div class="media-figure">
-              <p>{{user.data.apellido}}</p>
-          </div>
-      </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
         <div class="media-figure">
-            <p>{{user.data.identificacion}}</p>
+            <p>{{user.codigo}}</p>
         </div>
       </div>
       <div class="col-md-5 text-center">
-          <button class="btn btn-warning mr-4" (click)="editUser(user.id)">Editar</button>
-          <button class="btn btn-danger ml-4" (click)="deleteUser(user.id)">Eliminar</button>
+          <!-- <button class="btn btn-warning mr-4" (click)="editUser(user.codigo)">Editar</button> -->
+          <button class="btn btn-danger ml-4" (click)="deleteUser(user.codigo)">Eliminar</button>
       </div>
     </div>
   </div>
